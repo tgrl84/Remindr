@@ -1,5 +1,7 @@
-<div style="text-align: center;">
-    <h1>Remindr</h1>
-    <button onclick="window.location.href='/login'">Se connecter</button>
-    <button onclick="window.location.href='/signup'">Créer un compte</button>
-</div>
+{{#if user}}
+    <p>faire un post</p>
+    <a href='/logout'>Se deconnecter</a>
+{{else}}
+    <a href='/login'>Se connecter</a>
+    <a href='/signup'>Créer un compte</a>
+{{/if}}

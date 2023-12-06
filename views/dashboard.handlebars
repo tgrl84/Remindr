@@ -1,8 +1,11 @@
 <h1>Dashboard</h1>
 {{#if user}}
-    <p>Bonjour {{user.firstName}}</p>
-    <button onclick="window.location.href='/logout'">Se déconnecter</button>
+    <p>Vos informations</p>
+    <p>{{user.lastName}} {{user.firstName}}</p>
+    <p>{{user.email}}</p>
+    <a href='/logout'>Se deconnecter</a>
 {{else}}
     <p>Vous n'êtes pas connecté</p>
-    <button onclick="window.location.href='/login'">Se connecter</button>
-    <button onclick="window.location.href='/signup'">Créer un compte</button>
+    <a href='/login'>Se connecter</a>
+    <a href='/signup'>Créer un compte</a>
+{{/if}}

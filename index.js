@@ -2,18 +2,39 @@ import { PrismaClient } from '@prisma/client';
 import express from 'express';
 import { engine } from 'express-handlebars';
 import bodyParser from 'body-parser';
+import session from 'express-session';
 
 const app = express();
-const prisma = new PrismaClient();  
+const prisma = new PrismaClient(); 
+
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 app.set('views', './views');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.get('/', async (_, res) => {
+
+
+app.use(session({
+  secret: 'your-secret-key',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // set to true if your using https
+}));
+
+
+
+
+app.get('/', async (req, res) => {
     try {
-        res.render('home');
+        if (!req.session.email) {
+            res.render('home',{user: false});
+            return;
+        }
+        else{
+            res.render('home',{user: true});
+        }
+        
     } catch (error) {
         console.error(error);
         res.status(500).send('Une erreur est survenue');
@@ -47,7 +68,7 @@ app.post('/signup', async (req, res) => {
     }
 });
 
-app.get('/login', async (_, res) => {
+app.get('/login', async (req, res) => {
     try {
         res.render('connexion');
     } catch (error) {
@@ -73,17 +94,39 @@ app.post('/login', async (req, res) => {
             res.status(401).send('Mot de passe incorrect');
             return;
         }
-
-        res.redirect('/dashboard/'+user.firstName);
+        req.session.email = email;
+        res.redirect('/dashboard');
     } catch (error) {
         console.error(error);
         res.status(500).send('Une erreur est survenue');
     }
 });
 
-app.get('/dashboard/:name', async (req, res) => {
+app.get('/logout', async (req, res) => {
     try {
-        res.render('dashboard',{user: req.params.name});
+        req.session.destroy();
+        res.redirect('/');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Une erreur est survenue');
+    }
+});
+
+app.get('/dashboard', async (req, res) => {
+    try {
+        if (!req.session.email) {
+            res.render('dashboard');
+            return;
+        }
+        else{
+            const email = req.session.email;
+            const data = await prisma.User.findUnique({
+                where: {
+                    email: email,
+                },
+            });
+            res.render('dashboard',{user: data});
+        }
     } catch (error) {
         console.error(error);
         res.status(500).send('Une erreur est survenue');
