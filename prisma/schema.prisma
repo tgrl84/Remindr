@@ -16,4 +16,20 @@ model User {
   lastName  String
   email     String   @unique
   password  String
+  groups    GroupToUser[]
+}
+
+model Group {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  users     GroupToUser[]
+}
+
+model GroupToUser {
+  userId    Int
+  groupId   Int
+  user      User     @relation(fields: [userId], references: [id])
+  group     Group    @relation(fields: [groupId], references: [id])
+  
+  @@id([userId, groupId])
 }

@@ -133,4 +133,46 @@ app.get('/dashboard', async (req, res) => {
     }
 });
 
+app.get('/create-group', async (req, res) => {
+    try {
+        if (!req.session.email) {
+            res.render('home', { user: false });
+            return;
+        } else {
+            const users = await prisma.user.findMany();
+            res.render('create-group', {users: users});
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Une erreur est survenue');
+    }
+});
+app.post('/create-group', async (req, res) => {
+    try {
+        const { groupname: name, users } = req.body;
+        const group = await prisma.Group.create({
+            data: {
+                name,
+            },
+        });
+
+        for (let email of users) {
+            const user = await prisma.user.findUnique({ where: { email } });
+            if (user) {
+                await prisma.groupToUser.create({
+                    data: {
+                        userId: user.id,
+                        groupId: group.id,
+                    },
+                });
+            }
+        }
+
+        res.redirect('/');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Une erreur est survenue');
+    }
+});
+
 app.listen(3000, () => console.log('Server started on localhost:3000'))
