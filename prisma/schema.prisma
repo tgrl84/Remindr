@@ -23,6 +23,7 @@ model Group {
   id        Int       @id @default(autoincrement())
   name      String    @unique
   users     GroupToUser[]
+  rappels     Rappel[]  // Add this line
 }
 
 model GroupToUser {
@@ -32,4 +33,18 @@ model GroupToUser {
   group     Group    @relation(fields: [groupId], references: [id])
   
   @@id([userId, groupId])
+}
+
+model Rappel {
+  id          Int       @id @default(autoincrement())
+  nom         String
+  description String
+  date        DateTime
+  heure       DateTime
+  couleur     String
+
+  groupId     Int
+  group       Group     @relation(fields: [groupId], references: [id])
+
+  @@index([groupId])
 }

@@ -1,11 +1,33 @@
 <h1>Dashboard</h1>
-{{#if user}}
-    <p>Vos informations</p>
-    <p>{{user.lastName}} {{user.firstName}}</p>
-    <p>{{user.email}}</p>
-    <a href='/logout'>Se deconnecter</a>
-{{else}}
-    <p>Vous n'êtes pas connecté</p>
-    <a href='/login'>Se connecter</a>
-    <a href='/signup'>Créer un compte</a>
+<div class="info">
+    {{#if user}}
+        <h2>Vos informations</h2>
+        <p>{{user.lastName}} {{user.firstName}}</p>
+        <p>{{user.email}}</p>
+        
+        <h2>Vos groupe</h2>
+        <a class="button" href='/create-group'>Crée un groupe</a>
+        {{#each groups}}
+            <p> <a class="button" href="/groupe/{{this.id}}">{{this.name}}</a> </p>
+        {{/each}}   
+        
+        <a class="button" href='/logout'>Se deconnecter</a>
+    {{else}}
+        <p>Vous n'êtes pas connecté</p>
+        <a class="button" href='/login'>Se connecter</a>
+        <a class="button" href='/signup'>Créer un compte</a>
+    {{/if}}
+</div>
+{{#if rappels}}
+    <div class="rappels" ></div>
+        <h2>Vos rappels</h2>
+        {{#each rappels}}
+            <div class="rappel" style="background-color:var({{this.color}})">
+                <p>{{this.name}}</p>
+                <p>{{this.description}}</p>
+                <p>{{this.date}}</p>
+                <p>{{this.heure}}</p>
+            </div>
+        {{/each}}
+    </div>
 {{/if}}
