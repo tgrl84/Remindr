@@ -39,8 +39,8 @@ model Rappel {
   id          Int       @id @default(autoincrement())
   nom         String
   description String
-  date        DateTime
-  heure       DateTime
+  date        String
+  heure       String
   couleur     String
 
   groupId     Int
