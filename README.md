@@ -18,8 +18,5 @@ Application de gestion de rappels
 4. **Affichage sur le Tableau de Bord :**
     - Sur le tableau de bord, les utilisateurs doivent d'abord voir les rappels qui arrivent à échéance rapidement, indépendamment du groupe.
     - Ensuite, affichez la liste des groupes auxquels l'utilisateur appartient.
-5. **Modification et Suppression des Rappels :**
-    - Les utilisateurs peuvent modifier et supprimer les rappels dans les groupes auxquels ils appartiennent.
-6. **Affichage des Rappels dans un Groupe :**
+5. **Affichage des Rappels dans un Groupe :**
     - Lorsqu'un utilisateur accède à un groupe, les rappels doivent être affichés dans l'ordre de la date d'échéance, de la plus proche à la plus éloignée.
-    - Ajoutez une option pour afficher les rappels dépassés, avec un style différent pour indiquer qu'ils sont passés.
